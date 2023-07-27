@@ -1,0 +1,13 @@
+joblib
+tensorflow
+numpy
+scikit-learn
+gdown
+requests
+fastapi
+python-multipart
+Pillow
+python-multipart
+geopy
+roboflow
+uvicorn
