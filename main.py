@@ -72,22 +72,22 @@ example_response = {
 }
 
 
-@app.get("/images/{folder}/{filename}")
-async def read_image(folder: str, filename: str):
-    """
-    Function to return an image file stored in the specified folder and filename.
-    It first tries to locate the file in the plant photos folder, and if it doesn't find it, 
-    it looks for the file in the insect photos folder.
-    """
-    plant_path = os.path.join("/Users/methunraj/Desktop/ML/plant_photo", folder, filename)
-    insect_path = os.path.join("/Users/methunraj/Desktop/ML/Insect", folder, filename)
+# @app.get("/images/{folder}/{filename}")
+# async def read_image(folder: str, filename: str):
+#     """
+#     Function to return an image file stored in the specified folder and filename.
+#     It first tries to locate the file in the plant photos folder, and if it doesn't find it, 
+#     it looks for the file in the insect photos folder.
+#     """
+#     plant_path = os.path.join("/Users/methunraj/Desktop/ML/plant_photo", folder, filename)
+#     insect_path = os.path.join("/Users/methunraj/Desktop/ML/Insect", folder, filename)
     
-    if os.path.isfile(plant_path):
-        return FileResponse(plant_path)
-    elif os.path.isfile(insect_path):
-        return FileResponse(insect_path)
-    else:
-        raise HTTPException(status_code=404, detail="File not found")
+#     if os.path.isfile(plant_path):
+#         return FileResponse(plant_path)
+#     elif os.path.isfile(insect_path):
+#         return FileResponse(insect_path)
+#     else:
+#         raise HTTPException(status_code=404, detail="File not found")
 
 # @app.post('/predict',dependencies=[Depends(api_key_header)])
 @app.post('/predict',
@@ -175,10 +175,10 @@ async def predict(file: Optional[UploadFile] = File(None), image_url: Optional[s
                         pred.german_name = name.get('vernacularName')
                         break
 
-        # Add image URL to the prediction
-        image_files = os.listdir(os.path.join("/Users/methunraj/Desktop/ML/plant_photo", pred.name))  # Use predicted name as folder name
-        if image_files:
-            pred.image_url = f"/images/{pred.name}/{image_files[0]}"  # Include predicted name in URL
+        # # Add image URL to the prediction
+        # image_files = os.listdir(os.path.join("/Users/methunraj/Desktop/ML/plant_photo", pred.name))  # Use predicted name as folder name
+        # if image_files:
+        #     pred.image_url = f"/images/{pred.name}/{image_files[0]}"  # Include predicted name in URL
 
     # Check if the image contains insects
     if len(insect_results) > 0:
@@ -214,10 +214,10 @@ async def predict(file: Optional[UploadFile] = File(None), image_url: Optional[s
                             pred.german_name = name.get('vernacularName')
                             break
                             
-            # Add image URL to the prediction
-            image_files = os.listdir(os.path.join("/Users/methunraj/Desktop/ML/Insect", pred.name))  # Use predicted name as folder name
-            if image_files:
-                pred.image_url = f"/images/{pred.name}/{image_files[0]}"  # Include predicted name in URL
+            # # Add image URL to the prediction
+            # image_files = os.listdir(os.path.join("/Users/methunraj/Desktop/ML/Insect", pred.name))  # Use predicted name as folder name
+            # if image_files:
+            #     pred.image_url = f"/images/{pred.name}/{image_files[0]}"  # Include predicted name in URL
 
     else:
         insect_preds = "No Insect Found in the Image"
