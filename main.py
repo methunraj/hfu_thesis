@@ -105,7 +105,8 @@ async def read_image(folder: str, filename: str):
           dependencies=[Depends(api_key_header)])
 
 
-async def predict(file: UploadFile = File(...)):
+async def predict(file: Optional[UploadFile] = File(None), image_url: Optional[str] = None):
+
     """
     Endpoint to predict the type of plant or insect in an uploaded image.
     The function first reads the image and retrieves its geolocation.
@@ -115,7 +116,16 @@ async def predict(file: UploadFile = File(...)):
     """
 
     # Read the contents of the uploaded file and open the image
-    contents = await file.read()
+    
+    # Check if an image URL is provided
+    if image_url:
+        response = requests.get(image_url)
+        response.raise_for_status()  # Raise an exception for HTTP errors
+        contents = response.content
+    else:
+        # Read the contents of the uploaded file
+        contents = await file.read()
+
     image = Image.open(BytesIO(contents))
 
     # Retrieve the geolocation of the image
